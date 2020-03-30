@@ -45,3 +45,7 @@ class CDriveClient:
                 if res.status_code == 200 and res.json()["appStatus"] == "Available":
                     break
             return app_name
+    def app_token(self, app_name):
+        response = requests.post(self.api_url + "app-token/", data={"app_name": app_name}, headers={"Authorization": "Bearer " + self.token})
+        if response.status_code == 200:
+            return response.json()["app_token"]

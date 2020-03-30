@@ -2,10 +2,11 @@ import requests
 from .client import CDriveClient
 
 class Session:
-    def __init__(self, domain, username=None, password=None):
+    def __init__(self, domain, username=None, password=None, accessToken=None):
         self.domain = domain
-        self.accessToken = None
-        if (username != None and password != None):
+        if accessToken != None:
+            self.accessToken = accessToken
+        elif (username != None and password != None):
             self.accessToken = self.get_token(username, password)
             self.home = "users/" + username
     def get_token(self, username, password):
