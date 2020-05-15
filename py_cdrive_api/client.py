@@ -26,8 +26,16 @@ class CDriveClient:
         pass
     def delete(self, cdrive_path):
         pass
-    def download(self, cdrive_path):
-        pass
+    def download(self, cdrive_path, local_path):
+        response = requests.get(self.api_url + "download/?path=" + cdrive_path, headers={"Authorization":"Bearer " + self.token})
+        download_url = response.json()["download_url"]
+        url_wo_sig = download_url[:download_url.find('?')]
+        name = url_wo_sig[url_wo_sig.rfind('/') + 1 :]
+        file_path = os.path.join(local_path, name)
+        response = requests.get(download_url)
+        with open(file_path, 'wb') as f:
+            f.write(response.content)
+
     def share(self, cdrive_path, permission, target_name="", target_type="user"):
         data = {
             "path": cdrive_path,
